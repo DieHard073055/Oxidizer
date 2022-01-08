@@ -1,2 +1,5 @@
 # Oxidizer
-All the work I have been gradually doing to learn rust
+
+Ive been following the rust book tutorials.
+Ill be documenting the work ive done with the tutorials here.
+
