@@ -18,8 +18,8 @@ fn main(){
 When variables are mutable, they stand out since `mut` is in front of the declaration. Can convert to immutable without Copying.
 
 ### Zero Cost Abstraction
-1- You dont pay for what you dont use.
-2- You cant code the code you use any better.
+1. You dont pay for what you dont use.
+2. You cant code the code you use any better.
 No matter how many levels of abstraction you have, the compiler will optimize to the best implementation of the solution that someone would have written with the lower level primitives.
 
 The point of this is to improve user's experience, by introducing abstraction you reduce the complexity of the code.
