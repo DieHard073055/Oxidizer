@@ -1,5 +1,6 @@
 use rand::Rng;
-use rand_distr::{Distribution, Uniform, Normal};
+use rand_distr::{Distribution, Uniform, Normal, Standard};
+use rand::distributions::Alphanumeric;
 
 fn generate_random_numbers(){
     let mut rng = rand::thread_rng();
@@ -42,6 +43,62 @@ fn generate_random_numbers_with_a_given_distribution(){
     println!("N(2, 9) distribution: {}", v);
 }
 
+// generate random values for custom type
+
+#[allow(dead_code)]
+#[derive(Debug)]
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+impl Distribution<Point> for Standard {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Point {
+        let (rand_x, rand_y) = rng.gen();
+        Point{
+            x: rand_x,
+            y: rand_y,
+        }
+
+
+    }
+}
+
+fn generate_random_numbers_for_custom_type(){
+    let mut rng = rand::thread_rng();
+    let rand_tuple = rng.gen::<(i32, bool, f64)>();
+    let rand_point: Point = rng.gen();
+    println!("Random tuple: {:?}", rand_tuple);
+    println!("Random Point: {:?}", rand_point);
+
+}
+
+fn generate_random_password(){
+    let rand_string: String = rand::thread_rng()
+        .sample_iter(&Alphanumeric)
+        .take(30)
+        .map(char::from)
+        .collect();
+
+    println!("{}", rand_string);
+}
+
+fn generate_random_password_from_a_set_of_chars(){
+    const CHARSET: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+                            abcdefghijklmnopqrstuvwxyz\
+                            0123456789!@#$%^&*()~";
+    const PASSWORD_LEN: usize = 30;
+    let mut rng = rand::thread_rng();
+
+    let password: String = (0..PASSWORD_LEN)
+        .map(|_| {
+            let idx = rng.gen_range(0..CHARSET.len());
+            CHARSET[idx] as char
+        })
+        .collect();
+    println!("{}", password);
+}
+
 fn main() {
     println!("\ngenerate random numbers");
     generate_random_numbers();
@@ -51,4 +108,10 @@ fn main() {
     generate_uniform_distribution_of_random_numbers();
     println!("\ngenerate random numbers with a given distribution");
     generate_random_numbers_with_a_given_distribution();
+    println!("\ngenerate random numbers for custom types.");
+    generate_random_numbers_for_custom_type();
+    println!("\ngenerate random password");
+    generate_random_password();
+    println!("\ngenerate random password from a set of defined chars");
+    generate_random_password_from_a_set_of_chars();
 }
